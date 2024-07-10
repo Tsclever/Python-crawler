@@ -1,3 +1,5 @@
+# 项目一 爬百度首页
+
 # 从 urllib.request 库中，引用 urlopen 函数
 from urllib.request import urlopen
 
