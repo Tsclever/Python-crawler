@@ -4,7 +4,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-# 
+# 获取用户输入
 query = input("请输入一个你喜欢的明星：")
 
 # url 地址栏一定是用的 get 方法进行提交
@@ -12,12 +12,13 @@ query = input("请输入一个你喜欢的明星：")
 url = f'https://www.sogou.com/web?ie=UTF-8&query={query}'
 
 # 如若出现了访问不正常，则需要去浏览器里的控制台查看 User-Agent
-# 模拟人来访问网页，发起 get 请求
+# 模拟人来访问网页
 # 请求头
 RequestHeaders = {
-  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 }
 
+# 发起 get 请求
 # response 响应
 resp = requests.get(url, headers=RequestHeaders)   # 处理了一个小小的反爬
 
