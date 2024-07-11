@@ -24,7 +24,7 @@ headers = {
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 }
 
-# get()请求用 params   post()请求用 sata
+# get()请求用 params   post()请求用 data
 # params 参数用于传递查询字符串参数。这些参数将附加到 URL 的末尾，形成一个完整的请求 URL
 resp = requests.get(url, params=parm, headers=headers)
 
