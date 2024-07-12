@@ -29,3 +29,29 @@
 # 15       （ ）              匹配括号内的表达式，也表示一个组
 # 16        [ . . . ]        匹配字符组中的字符
 # 17        [ ^. . . ]       匹配除了字符组中字符的所有字符（需要区分 8，这里的 ^ 含义不一样）
+import requests
+from bs4 import BeautifulSoup
+
+query = input("请输入一个你喜欢的明星：")
+url = f'https://www.sogou.com/web?ie=UTF-8&query={query}'
+
+RequestHeaders = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+}
+
+resp = requests.get(url, headers=RequestHeaders)
+
+if resp.status_code == 200:
+    soup = BeautifulSoup(resp.text, "html.parser")
+
+    page_text = soup.get_text()
+
+    clean_text = "\n".join(line.strip() for line in page_text.splitlines() if line.strip())
+
+    with open(f"{query}档案.txt", "w", encoding="utf-8") as f:
+        f.write(clean_text)
+
+    print(f"页面文本内容已成功写入到{query}档案.txt文件中。")
+
+else:
+    print(f"请求失败，状态码：{resp.status_code}")
