@@ -1,5 +1,6 @@
 # 项目2 简易搜狗搜索引擎
-# 项目介绍：在控制台中输入 明星 名字，在网页中所搜索到的结果，会爬取下来，保存到以 明星名字 命名的 txt 文件中
+# 项目介绍：通过引入requests库获取网页信息, 通过引用bs4库, 使用BeautifulSoup模块清理数据
+#         在控制台中输入 明星 名字，在网页中所搜索到的结果，会爬取下来，保存到以 明星名字 命名的 txt 文件中
 
 import requests
 from bs4 import BeautifulSoup
