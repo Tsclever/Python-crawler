@@ -30,9 +30,9 @@ with open("data.csv", "w", encoding="utf-8") as file:
   resp = requests.get(url, verify=False, headers=headers)    # verify=False 去除安全验证
   resp.encoding = "gb2312"  # 指定字符集
 
-  obj1 = re.compile(rf"{choise}.*?<ul>(?P<ul>.*?)</ul>", re.S)
-  obj2 = re.compile(r"<a href='(?P<href>.*?)'", re.S)
-  obj3 = re.compile(r'◎片　　名(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf"><a href="(?P<download>.*?)">', re.S)
+  obj1 = re.compile(rf"{choise}.*?<ul>(?P<ul>.*?)</ul>", re.S)    # (提取 2024必看热片)
+  obj2 = re.compile(r"<a href='(?P<href>.*?)'", re.S)   # (提取单个电影的链接)
+  obj3 = re.compile(r'◎片　　名(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf"><a href="(?P<download>.*?)">', re.S)   # (提取 电影名字 和 下载地址)
 
 # 提取主页面内容 (提取 2024必看热片)
   result1 = obj1.finditer(resp.text)
