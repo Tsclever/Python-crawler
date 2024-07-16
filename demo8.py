@@ -1,6 +1,6 @@
 # 项目8 屠戮盗版天堂
-# 项目介绍: 	1.定位到2024必看片
-#	           2.从2024必看片中提取到子页面的链接地址
+# 项目介绍: 	1.定位到2024必看热片
+#	           2.从2024必看热片中提取到子页面的链接地址
 #            3.请求子页面的链接地址，拿到我们想要的下载地址
 # 注意: 网站更新后，增加了反爬机制，请求头内要有 User-Agent 和 Cookie
 #      如若程序失效，说明原网页的Cooike更新了，我们需要重新获取Cooike
@@ -21,7 +21,10 @@ headers = {
 }
 
 print("2024新片精品", "2024必看热片", "迅雷电影资源", "经典大片", "华语电视剧", "日韩电视剧", "欧美电视剧", "综艺&动漫")
-choise = input("请选择爬取内容：")
+choice = input("请选择爬取内容：")
+
+# 提取到的电影链接, 保存到列表中
+url_href_list = []
 
 with open("data.csv", "w", encoding="utf-8") as file:
   csv_writer = csv.writer(file)
@@ -30,14 +33,12 @@ with open("data.csv", "w", encoding="utf-8") as file:
   resp = requests.get(url, verify=False, headers=headers)    # verify=False 去除安全验证
   resp.encoding = "gb2312"  # 指定字符集
 
-  obj1 = re.compile(rf"{choise}.*?<ul>(?P<ul>.*?)</ul>", re.S)    # (提取 2024必看热片)
+  obj1 = re.compile(rf"{choice}.*?<ul>(?P<ul>.*?)</ul>", re.S)    # (提取 2024必看热片)
   obj2 = re.compile(r"<a href='(?P<href>.*?)'", re.S)   # (提取单个电影的链接)
-  obj3 = re.compile(r'◎片　　名(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf"><a href="(?P<download>.*?)">', re.S)   # (提取 电影名字 和 下载地址)
+  obj3 = re.compile(r'◎片　　名　(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf"><a href="(?P<download>.*?)">', re.S)   # (提取 电影名字 和 下载地址)
 
 # 提取主页面内容 (提取 2024必看热片)
   result1 = obj1.finditer(resp.text)
-  # 提取到的电影链接, 保存到列表中
-  chid_href_list = []
   for i in result1:
     ul = i.group("ul")
 
@@ -45,17 +46,17 @@ with open("data.csv", "w", encoding="utf-8") as file:
     result2 = obj2.finditer(ul)
     for ii in result2:
       # 拼接子页面的url地址: 域名 + 子页面地址
-      chid_href = url + ii.group("href").strip("/")
-      chid_href_list.append(chid_href)   # 把子页面链接保存起来
+      url_href = url + ii.group("href").strip("/")
+      url_href_list.append(url_href)   # 把子页面链接保存起来
 
   # 提取子页面内容 (提取 电影名字 和 下载地址)
-  for href in chid_href_list:
-    child_resp = requests.get(href, verify=False, headers=headers)
-    child_resp.encoding = "gb2312"
+  for href in url_href_list:
+    new_resp = requests.get(href, verify=False, headers=headers)
+    new_resp.encoding = "gb2312"
 
-    result3 = obj3.search(child_resp.text)
+    result3 = obj3.search(new_resp.text)
 
-    csv_name = result3.group("movie").strip()
+    csv_name = result3.group("movie")
     csv_down = result3.group("download")
     csv_writer.writerow([csv_name, csv_down])
         
@@ -66,7 +67,7 @@ with open("data.csv", "w", encoding="utf-8") as file:
     # print(result3.group("download"))
     # break
 
-print(f"{choise}爬取成功")
+print(f"{choice}爬取成功")
 
 # print(resp.text)
 # /usr/local/lib/python3.10/dist-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request is being made to host 'www.dytt89.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
