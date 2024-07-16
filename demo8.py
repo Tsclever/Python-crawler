@@ -28,4 +28,4 @@ print(resp.text)
 # 此时可以用到 urllib3 库，来消除 不安全请求警告，或者添加安全证书
 
 # <script src="/_guard/auto.js"></script>
-# 出现这个js文件，说明网页增加了反爬机制，我尝试了很多办法，selenium库失败，fscrape库失败，最终在请求头内添加了Cookie，才成功拿到信息
+# 出现这个js文件，说明网页增加了反爬机制，我尝试了很多办法，最终在请求头内添加了Cookie，才成功拿到信息
