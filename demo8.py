@@ -3,22 +3,70 @@
 #	           2.从2024必看片中提取到子页面的链接地址
 #            3.请求子页面的链接地址，拿到我们想要的下载地址
 # 注意: 网站更新后，增加了反爬机制，请求头内要有 User-Agent 和 Cookie
+#      如若程序失效，说明原网页的Cooike更新了，我们需要重新获取Cooike
 
 import requests
-# import urllib3   # urllib3 是一个用于 Python 的强大 HTTP 客户端库，提供了许多功能，使得在网络请求中更为简洁和高效
+import re
+import urllib3   # urllib3 是一个用于 Python 的强大 HTTP 客户端库，提供了许多功能，使得在网络请求中更为简洁和高效
+import csv
 
 # 禁用 InsecureRequestWarning 的警告，InsecureRequestWarning(不安全请求警告)
-# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)   # urllib3.disable_warnings 用于禁用由 urllib3 发出的警告信息
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)   # urllib3.disable_warnings 用于禁用由 urllib3 发出的警告信息
+
+url = "https://www.dytt89.com/"
 
 headers = {
   "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-  "Cookie":"guardok=Hju4Ta66KvVKGFBVP/jNsjdWcG+Z/rkbXtiD4BC5VZrGs6dqMgWJtrmjYF/ijqyFNcqheatzDyiXcHh7YHiQmg==; __51vcke__KSHU1VNqce379XHB=65a32d95-2026-5c5e-8312-dfbcdd4651ea; __51vuft__KSHU1VNqce379XHB=1721102830894; Hm_lvt_8e745928b4c636da693d2c43470f5413=1721102831; HMACCOUNT=77CCD5AA8FC6EB68; Hm_lvt_0113b461c3b631f7a568630be1134d3d=1721102831; Hm_lvt_93b4a7c2e07353c3853ac17a86d4c8a4=1721102831; __vtins__KSHU1VNqce379XHB=%7B%22sid%22%3A%20%22565e00f6-0cae-52a6-886d-dd89f76330b8%22%2C%20%22vd%22%3A%201%2C%20%22stt%22%3A%200%2C%20%22dr%22%3A%200%2C%20%22expires%22%3A%201721110913375%2C%20%22ct%22%3A%201721109113375%7D; __51uvsct__KSHU1VNqce379XHB=2; Hm_lpvt_0113b461c3b631f7a568630be1134d3d=1721109114; Hm_lpvt_8e745928b4c636da693d2c43470f5413=1721109114; Hm_lpvt_93b4a7c2e07353c3853ac17a86d4c8a4=1721109114"
+  "Cookie":"__51vcke__KSHU1VNqce379XHB=65a32d95-2026-5c5e-8312-dfbcdd4651ea; __51vuft__KSHU1VNqce379XHB=1721102830894; Hm_lvt_8e745928b4c636da693d2c43470f5413=1721102831; HMACCOUNT=77CCD5AA8FC6EB68; Hm_lvt_0113b461c3b631f7a568630be1134d3d=1721102831; Hm_lvt_93b4a7c2e07353c3853ac17a86d4c8a4=1721102831; guardok=Hju4Ta66KvVKGFBVP/jNspaAkrV2R5GL9pRu7bWG8m34BMbnjCIPdx/5QTXdanR5DJxtch0bbBNtPImYnTy58w==; __vtins__KSHU1VNqce379XHB=%7B%22sid%22%3A%20%22bc98d519-bc6d-5f9a-975c-ba586f8cf22d%22%2C%20%22vd%22%3A%201%2C%20%22stt%22%3A%200%2C%20%22dr%22%3A%200%2C%20%22expires%22%3A%201721134721279%2C%20%22ct%22%3A%201721132921279%7D; __51uvsct__KSHU1VNqce379XHB=5; Hm_lpvt_93b4a7c2e07353c3853ac17a86d4c8a4=1721132921; Hm_lpvt_8e745928b4c636da693d2c43470f5413=1721132921; Hm_lpvt_0113b461c3b631f7a568630be1134d3d=1721132921"
 }
 
-url = "https://www.dytt89.com/"
-resp = requests.get(url, verify=False, headers=headers)    # verify=False 去除安全验证
-resp.encoding = "gb2312"
-print(resp.text)
+print("2024新片精品", "2024必看热片", "迅雷电影资源", "经典大片", "华语电视剧", "日韩电视剧", "欧美电视剧", "综艺&动漫")
+choise = input("请选择爬取内容：")
+
+with open("data.csv", "w", encoding="utf-8") as file:
+  csv_writer = csv.writer(file)
+  csv_writer.writerow(["name", "download"])
+
+  resp = requests.get(url, verify=False, headers=headers)    # verify=False 去除安全验证
+  resp.encoding = "gb2312"  # 指定字符集
+
+  obj1 = re.compile(rf"{choise}.*?<ul>(?P<ul>.*?)</ul>", re.S)
+  obj2 = re.compile(r"<a href='(?P<href>.*?)'", re.S)
+  obj3 = re.compile(r'◎片　　名(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf"><a href="(?P<download>.*?)">', re.S)
+
+# 提取主页面内容 (提取 2024必看热片)
+  result1 = obj1.finditer(resp.text)
+  # 提取到的电影链接, 保存到列表中
+  chid_href_list = []
+  for i in result1:
+    ul = i.group("ul")
+
+    # 提取子页面链接 (提取 单个电影的链接)
+    result2 = obj2.finditer(ul)
+    for ii in result2:
+      # 拼接子页面的url地址: 域名 + 子页面地址
+      chid_href = url + ii.group("href").strip("/")
+      chid_href_list.append(chid_href)   # 把子页面链接保存起来
+
+  # 提取子页面内容 (提取 电影名字 和 下载地址)
+  for href in chid_href_list:
+    child_resp = requests.get(href, verify=False, headers=headers)
+    child_resp.encoding = "gb2312"
+
+    result3 = obj3.search(child_resp.text)
+
+    csv_name = result3.group("movie").strip()
+    csv_down = result3.group("download")
+    csv_writer.writerow([csv_name, csv_down])
+        
+    # dic = result3.groupdict()
+    # csv_writer.writerow(dic.values())
+
+    # print(result3.group("movie"))
+    # print(result3.group("download"))
+    # break
+
+print(f"{choise}爬取成功")
 
 # print(resp.text)
 # /usr/local/lib/python3.10/dist-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request is being made to host 'www.dytt89.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
