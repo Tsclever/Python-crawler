@@ -5,7 +5,7 @@
 
 import requests
 from bs4 import BeautifulSoup
-import time
+import time   # Python 自带的标准库中包含了 time 模块
 
 url = "http://www.umeituku.com/weimeitupian/"
 
