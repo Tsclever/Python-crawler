@@ -15,15 +15,15 @@ datas = {
   "password": "密码"
 }
 
-# 1.登录
+# 1.登录(获取cookie)
 url = "https://www.jiuhuaiwenxue.com/loginAction"
 session.post(url, data=datas)
 # resp = session.post(url, data=datas)
 # print(resp.cookies)
 
 
-# 2.拿书架上的内容
-# 刚才的session中石油cookie的
+# 2.拿书架上的内容(通过cokie拿到内容)
+# 刚才的session中是有cookie的
 resp = session.get('https://www.jiuhuaiwenxue.com/user/mybookcase')
 print(resp.text)
 
