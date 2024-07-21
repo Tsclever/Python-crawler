@@ -2,6 +2,7 @@
 # 项目介绍：1.找到未加密的参数                       window.arsrss(参数, xxx, xxx)
 #          2.想办法把参数进行加密(必须参考网易的逻辑), parms => encText , encSeckey => encSecKey
 #          3.发送请求给网易，拿到评论信息
+# 史诗级难度
 
 import requests
 from Crypto.Cipher import AES   # 这里要注意, pycrypto库已经不再维护, 所以需要安装pycryptodome库, pip3 install --upgrade pycryptodome
@@ -111,12 +112,9 @@ comments = parsed_data['data']['comments']
 for comment in comments:
     user_info = comment['user']
     content = comment['content']
-    rich_content = comment['richContent']
     
     print("用户昵称:", user_info['nickname'])
     print("评论内容:")
     print(content)
-    print("\n富文本内容:")
-    print(rich_content)
     print("时间:", comment['timeStr'])
     print("-" * 40)
