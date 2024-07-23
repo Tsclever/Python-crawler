@@ -4,6 +4,8 @@
 #          线程是执行单位
 
 # 启动每一个程序默认都会有一个主线程
+from threading import Thread   # 线程类模块
+
 
 # def func():
 #   for i in range(1000):
@@ -20,7 +22,6 @@
 
 # 方法一
 # 小脚本写法
-from threading import Thread   # 线程类模块
 
 # def func():
 #   for i in range(1000):
