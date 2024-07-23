@@ -6,6 +6,7 @@
 # 启动每一个程序默认都会有一个主线程
 from threading import Thread   # 线程类模块
 
+# 单进程
 
 # def func():
 #   for i in range(1000):
