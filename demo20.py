@@ -18,7 +18,7 @@ def download_one_page(url, data, file, mouth):
     # print(data)
 
     comments = data_list['list']   # 拿到json中list里所有的数据
-    time.sleep(1)   # 设置1延迟
+    time.sleep(1)   # 设置1秒延迟
 
     for i in comments:   # 遍历数据
       # print(i)
