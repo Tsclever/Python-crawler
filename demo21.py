@@ -141,7 +141,7 @@ import asyncio   # 是一个用于编写单线程并发代码的库, 它提供�
 async def download(url):
   print("开始下载")
   await asyncio.sleep(2)   # 模拟网络请求   requests.get()
-  print("下在完成")
+  print("下载完成")
 
 async def main():
   urls = [
@@ -160,3 +160,43 @@ async def main():
 
 if __name__ == '__main__':
   asyncio.run(main())
+
+
+# 补充
+# 如若要使用asyncio.wait方法
+async def func1():
+  print("你好啊, 我叫1号")
+  await asyncio.sleep(3)   # 异步操作   await 可以理解为程序挂起, 3个await一起干
+  print("你好啊, 我叫1号")
+
+async def func2():
+  print("你好啊, 我叫22号")
+  await asyncio.sleep(2)
+  print("你好啊, 我叫22号")
+
+async def func3():
+  print("你好啊, 我叫333号")
+  await asyncio.sleep(4)
+  print("你好啊, 我叫333号")
+
+async def main():   # await 必须写在async协程函数里
+  # 第一种写法
+  # f1 = func1()
+  # await f1   # 一般await挂起操作放在协程对象前面
+
+  # 第二种写法
+  tasks = [
+    asyncio.create_task(func1()),   # py3.8以后加上syncio.create_task()把协程对象包装成 列表
+    asyncio.create_task(func2()), 
+    asyncio.create_task(func3())
+  ]
+  await asyncio.wait(tasks)    
+  # await asyncio.gather(*tasks)  
+
+if __name__ == '__main__':
+  t1 = time.time()
+  # 一次行启动多个任务(协程)
+  asyncio.run(main())
+  t2 = time.time()
+  print(t2 - t1)  
+
