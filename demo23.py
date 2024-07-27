@@ -23,12 +23,12 @@ async def aiodownload(cid, b_id, title):
     "cid":f"{b_id}|{cid}",
     "need_bookinfo":1
   }
-  data = json.dumps(data)
+  data = json.dumps(data)   # data是个字典, 需要用json.dumps转换成json格式
   url = f"https://dushu.baidu.com/api/pc/getChapterContent?data={data}"
 
-  async with aiohttp.ClientSession() as session:
-    async with session.get(url) as resp:
-      json_data = await resp.json()
+  async with aiohttp.ClientSession() as session:   # 构建异步http对象
+    async with session.get(url) as resp:   # 构建异步请求
+      json_data = await resp.json()   # 由于是异步函数, 所以需要用await挂起
 
       # 创建目录
       name = "西游记"
