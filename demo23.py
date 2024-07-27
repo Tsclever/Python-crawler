@@ -50,7 +50,7 @@ async def getCatalog(url):
   resp = requests.get(url)
   json_data = json.loads(resp.text)
   tasks = []
-  contents = json_data['data']['novel']['items']   # items就是对应每一个在章节的名称和cid
+  contents = json_data['data']['novel']['items']   # items就是对应每一个在章节的名称和cids
   # print("b_id:",b_id)
   for items in contents:
     title = items['title']
