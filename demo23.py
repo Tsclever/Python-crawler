@@ -1,4 +1,4 @@
-# 项目23 扒光一本小说
+# 项目23 扒光一本小说(异步下载)
 
 # 小说简介链接, 只需要请求一次, 所以不需要异步
 # https://dushu.baidu.com/api/pc/getCatalog?data={"book_id":"4306063500"}
