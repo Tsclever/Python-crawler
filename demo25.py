@@ -15,7 +15,6 @@ import requests
 import re
 from urllib.parse import urljoin  
 
-n = 1   # 计数
 
 # 1.拿到85576-1-1.html的页面源代码
 url = "https://www.kanju7.com/play/85576-1-1.html"
@@ -61,6 +60,8 @@ print("over!")
 
 
 # 4.解析m3u8文件
+n = 1   # 计数
+
 with open(f"{name}.m3u8", mode="r", encoding="utf-8") as f2:
   for line in f2:
     line = line.strip()   # 去掉空格, 空白, 换行符
