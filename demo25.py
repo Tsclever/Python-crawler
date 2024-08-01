@@ -55,9 +55,6 @@ name = obj3.search(resp.text).group("name")
 with open(f"{name}.m3u8", mode="wb") as f:
   f.write(resp3.content)
 
-resp3.close()
-print("over!")
-
 
 # 4.解析m3u8文件
 n = 1   # 计数
