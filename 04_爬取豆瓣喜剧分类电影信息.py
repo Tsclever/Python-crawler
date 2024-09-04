@@ -1,5 +1,5 @@
 # 项目4 爬取豆瓣喜剧分类电影信息
-# 项目介绍：在控制台中输出 从网页中爬取到的戏剧电影的信息，以 json()数组 形式输出
+# 项目介绍：从网页中爬取到的戏剧电影的信息，以 json()数组 形式输出
 # 注意：1.url地址，不要无脑复制url地址，多看一眼，多分析一下，哪一部分是地址，哪一部分是参数。
 #      2.在控制台中 Payload 选项里，一定要注意 Query String Parameters 属性里 "start" 这个值
 #        在往下刷新的时候，"start" 会递增，设置成递增值，则会爬取更多电影信息
@@ -32,14 +32,20 @@ resp = requests.get(url, params=parm, headers=headers)
 # print(resp.request.url)
 
 # 输出为空，说明网页有反爬
+# 需要设置请求头
 # print(resp.text)
 
-# {'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'}
-# 这里的请求头不对 'User-Agent': 'python-requests/2.32.3'
-# print(resp.request.headers)
-# print(resp.status_code)
-
 # 输出json()数组
-print(resp.json())
+# print(resp.text)
+
+# 提取 电影名称 和 演员表
+content = resp.json()
+for i in content:
+  name = i['title']
+  performer = i['actors']
+  print("电影名称：", name)
+  print("演员：", performer)
+  print(" ")
+
 #释放资源
 resp.close()
