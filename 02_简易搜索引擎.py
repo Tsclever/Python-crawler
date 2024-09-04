@@ -1,9 +1,10 @@
 # 项目2 简易搜狗搜索引擎
-# 项目介绍：1.通过引入requests库获取网页信息, 通过引用bs4库, 使用BeautifulSoup模块清理数据
-#          2.在控制台中输入 明星 名字，在网页中所搜索到的结果，会爬取下来，保存到以 明星名字 命名的 txt 文件中
+# 项目介绍：在控制台中输入内容, 就可以搜索到相应的内容
+# 项目流程：1.引入 requests 库
+#          2.设置请求头(处理反爬)
+#          3.把爬取到的内容写入到 txt 文件中
 
 import requests
-from bs4 import BeautifulSoup
 
 # 获取用户输入
 query = input("请输入一个你喜欢的明星：")
@@ -33,25 +34,12 @@ resp = requests.get(url, headers=RequestHeaders)   # 处理了一个小小的反
 # print(resp.text)
 
 # 加了请求头之后，成功打印网页源代码
-# 实现了简易的搜哦框
+# 实现了简易的搜索引擎
 # print(resp.text)
 
-# 检查响应状态码
-if resp.status_code == 200:
-    # 解析HTML页面
-    soup = BeautifulSoup(resp.text, 'html.parser')
-    
-    # 获取所有文本内容
-    page_text = soup.get_text()
-    
-    # 剔除文本中的多余空白和缩进
-    # 分割文本，去除每一行两端的空白，再将非空行重新连接
-    clean_text = "\n".join(line.strip() for line in page_text.splitlines() if line.strip())
-    
-    # 将清理后的文本内容写入到文件
-    with open(f"{query}档案.txt", "w", encoding="utf-8") as file:
-        file.write(clean_text)
-    
-    print(f"页面文本内容已成功写入到{query}档案.txt文件中。")
-else:
-    print(f"请求失败，状态码：{resp.status_code}")
+# 注意：xx档案.txt 是网页的源代码, 所需要的信息在html标签中, ctrl + f 搜索明星名字即可
+# 当我们学到 bs4 库的时候, 就可以剔除里面的 html 标签了 
+with open(f"{query}档案.txt", "w", encoding="utf-8") as file:
+    file.write(resp.text)
+
+print(f"页面文本内容已成功写入到{query}档案.txt文件中。")
