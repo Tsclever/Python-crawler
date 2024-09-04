@@ -38,8 +38,10 @@ resp = requests.get(url, params=parm, headers=headers)
 # 输出json()数组
 # print(resp.text)
 
+# requests库自带 .json()方法
 # 提取 电影名称 和 演员表
 content = resp.json()
+
 for i in content:
   name = i['title']
   performer = i['actors']
