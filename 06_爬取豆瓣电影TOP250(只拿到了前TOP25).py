@@ -1,5 +1,5 @@
-# 项目6 爬取豆瓣电影TOP250(只拿到了前25)
-# 项目介绍: 1.通过requests库拿到页面源代码 
+# 项目6 爬取豆瓣电影TOP250(只拿到了前TOP25)
+# 项目流程: 1.通过requests库拿到页面源代码 
 #          2.通过re模块来提取想要的有效信息
 #          3.通过csv模块来保存数据, 用于读取和写入CSV（逗号分隔值）文件
 # 注意: Python 自带的标准库中包含了 re 模块和 csv 模块
@@ -19,14 +19,16 @@ resp = requests.get(url, headers=headers)
 page = resp.text
 
 # 使用正则表达式解析数据
+# r 在 Python 中用于表示原始字符串。在原始字符串中, 反斜杠 (\) 不会被视为转义字符, 它会按照字面意义被解释。
+# 我的理解: 声明 我要在字符串中使用 正则表达式了
 # re.S  让 . 能匹配换行符
 obj = re.compile(r'<li>.*?<div class="item">'
                 r'.*?<span class="title">(?P<name>.*?)</span>'
-                r'.*?<p class="">.*?<br>(?P<year>.*?)&nbsp'
+                r'.*?<p class="">.*?<br>(?P<year>.*?)&nbsp'   # 第二种去去掉空格的方法 r'.*?<br>.*?\n.*?\s+(?P<year>.*?)&nbsp'
                 r'.*?</p>.*?<span class="rating_num" property="v:average">(?P<score>.*?)</span>'
                 r'.*?<span>(?P<num>.*?)人评价</span>', re.S)   
 
-# 开始匹配, 找到所有匹配的内容
+# 开始匹配, 找到所有匹配的内容, 返回的是迭代器
 text = obj.finditer(page)
 
 # 打开csv文件, 并准备写入数据
@@ -44,4 +46,4 @@ with open("data.csv", mode="w", encoding="utf-8") as file:
     # 将字典中的值写入CSV文件
     csv_writer.writerow(dic.values())
 
-print("over!")
+print("豆瓣Top25成功爬取!")
