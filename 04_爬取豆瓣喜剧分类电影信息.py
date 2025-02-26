@@ -5,6 +5,8 @@
 #        在往下刷新的时候，"start" 会递增，设置成递增值，则会爬取更多电影信息
 # 总结：从这个项目可以得出，此时的网页是 客户端渲染
 
+#  豆瓣地址:https://movie.douban.com/typerank?type_name=%E5%96%9C%E5%89%A7&type=24&interval_id=100:90&action=
+
 import requests
 
 # url = "https://movie.douban.com/j/chart/top_list?type=24&interval_id=100%3A90&action=&start=0&limit=20"
