@@ -78,8 +78,8 @@ print(list3.group())   # 输出10086
 
 
 # match 是从头开始匹配, 条件是 \d+ , 只匹配纯数字, 类似于 ^\d+
-list4 = re.match(r"\d+", "我的电话是：10086，我女盆友的电话是：10010")
-print(list4.group())   # 'NoneType' object has no attribute 'group'   list4 为空
+# list4 = re.match(r"\d+", "我的电话是：10086，我女盆友的电话是：10010")
+# print(list4.group())   # 'NoneType' object has no attribute 'group'   list4 为空
 
 list4 = re.match(r"\d+", "10086，我女盆友的电话是：10010")
 print(list4.group())   # 10086
@@ -110,6 +110,6 @@ obj = re.compile(r"<div class='.*?'><span id='(?P<id>\d+)'>(?P<name>.*?)</span><
 
 result = obj.finditer(s)
 for i in result:
-  print(i.group())        # <div class='zjl'><span id='1'>周杰伦</span></div>
   print(i.group("id"))    # 获取id组的内容，输出：1
   print(i.group("name"))  # 获取name组的内容，输出：周杰伦
+  print(i.group())        # <div class='zjl'><span id='1'>周杰伦</span></div>
