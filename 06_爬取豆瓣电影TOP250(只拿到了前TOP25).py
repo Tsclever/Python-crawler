@@ -34,6 +34,7 @@ text = obj.finditer(page)
 # 打开csv文件, 并准备写入数据
 with open("data.csv", mode="w", encoding="utf-8") as file:
   csv_writer = csv.writer(file)   # 创建一个csv.writer写入对象,调用csv,writer()方法,告诉python我要操作 file 里的数据了
+  csv_writer.writerow(["name", "year", "score", "num"])
 
   for i in text:
     # print(i.group("name"))
