@@ -62,6 +62,7 @@ list1 = re.findall(r"\d+", "我的电话是：10086，我女盆友的电话是�
 print(list1)   # ['10086', '10010']
 
 
+# 全局匹配
 # finditer: 匹配字符串中所有的内容(返回的是迭代器), 从迭代器中拿到内容需要 .group() 方法
 list2 = re.finditer(r"\d+", "我的电话是：10086")
 # print(list2)   <callable_iterator object at 0x7fd9c533bb50>   这里说明了list2是 迭代器
@@ -70,7 +71,7 @@ for i in list2:
 # print(i)   <re.Match object; span=(6, 11), match='10086'>   正则表达式; 字符串从索引 6 开始，到索引 11 结束, 匹配到的字符串是 10086
   print(i.group())   # 10086
 
-
+# 全局匹配
 # search, 找到一个结果就返回, 返回的结果是match对象, 如果匹配不上，search返回的结果是none, 拿数据需要 .group()
 list3 = re.search(r"\d+", "我的电话是：10086，我女盆友的电话是：10010")
 print(list3.group())   # 输出10086
