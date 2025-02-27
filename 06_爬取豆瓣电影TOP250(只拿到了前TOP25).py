@@ -43,8 +43,9 @@ with open("data.csv", mode="w", encoding="utf-8") as file:
     # print("评论数:",i.group("num"))
     dic = i.groupdict()   # 将匹配到的 命名分组 转换为 字典(就是把上面print()出来的数据转换为字典),
     dic['year'] = dic['year'].strip()   # 此时文本已经存入到 dic 字典中, 直接在内存中修改
-    # print(dic)
+    print(dic)
     # 将字典中的值写入CSV文件
     csv_writer.writerow(dic.values())
 
+resp.close()
 print("豆瓣Top25成功爬取!")
