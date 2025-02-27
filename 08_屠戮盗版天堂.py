@@ -15,7 +15,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)   # urllib3.
 
 url = "https://www.dytt89.com/"
 
-# 如果返回为空，或者无法访问，需要加cookie
+# 如果返回为空/报错，或者无法访问，需要加cookie
 headers = {
   "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
 }
