@@ -11,9 +11,9 @@ url = "https://fanyi.baidu.com/sug"
 name = input("请输入你要翻译的内容：")
 print("\n")
 
+# 如果返回为空/报错，或者无法访问，需要加cookie
 headers = {
   "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-  "cookie":"从网页中获取cookie,然后放入在这里,不加cookie无法使用"
 }
 
 # 查看抓包数据中的，Form Data 属性，在控制台的 Payload 选项里
