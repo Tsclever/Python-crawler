@@ -15,16 +15,20 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)   # urllib3.
 
 url = "https://www.dytt89.com/"
 
+# 如果返回为空，或者无法访问，需要加cookie
 headers = {
   "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-  "cookie":"guardok=5COVX3Vewv/yxdA5sh46t0rvA0lRfObrBWNEOOEdFWgmAowAFV1qYjDHFVdk96TBOvp3B84H91k9/PHOgZpnxQ==; __vtins__KSHU1VNqce379XHB=%7B%22sid%22%3A%20%225cf084ce-4de4-53b7-b23b-455ada57f6b1%22%2C%20%22vd%22%3A%201%2C%20%22stt%22%3A%200%2C%20%22dr%22%3A%200%2C%20%22expires%22%3A%201722087022513%2C%20%22ct%22%3A%201722085222513%7D; __51uvsct__KSHU1VNqce379XHB=1; __51vcke__KSHU1VNqce379XHB=6b8cff7f-849b-5e6a-9047-4f64a10d95f9; __51vuft__KSHU1VNqce379XHB=1722085222515; Hm_lvt_8e745928b4c636da693d2c43470f5413=1722085223; Hm_lpvt_8e745928b4c636da693d2c43470f5413=1722085223; HMACCOUNT=1CCEDCBA79E841B5; Hm_lvt_0113b461c3b631f7a568630be1134d3d=1722085223; Hm_lpvt_0113b461c3b631f7a568630be1134d3d=1722085223; Hm_lvt_93b4a7c2e07353c3853ac17a86d4c8a4=1722085223; Hm_lpvt_93b4a7c2e07353c3853ac17a86d4c8a4=1722085223"
 }
 
-print("2024新片精品", "2024必看热片", "迅雷电影资源", "经典大片", "华语电视剧", "日韩电视剧", "欧美电视剧", "综艺&动漫")
+# resp = requests.get(url, headers=headers)
+# resp.encoding = "gb2312"
+# print(resp.text)
+
+print("2025新片精品", "2025必看热片", "迅雷电影资源", "经典大片", "华语电视剧", "日韩电视剧", "欧美电视剧", "综艺&动漫")
 choice = input("请选择爬取内容：")
 
 # 提取到的电影链接, 保存到列表中
-url_href_list = []
+child_href_list = []
 
 with open("data.csv", "w", encoding="utf-8") as file:
   csv_writer = csv.writer(file)
@@ -35,22 +39,24 @@ with open("data.csv", "w", encoding="utf-8") as file:
 
   obj1 = re.compile(rf"{choice}.*?<ul>(?P<ul>.*?)</ul>", re.S)    # (提取 2024必看热片)
   obj2 = re.compile(r"<a href='(?P<href>.*?)'", re.S)   # (提取单个电影的链接)
-  obj3 = re.compile(r'◎片　　名　(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf"><a href="(?P<download>.*?)">', re.S)   # (提取 电影名字 和 下载地址)
+  obj3 = re.compile(r'◎片　　名　(?P<movie>.*?)<br />.*?<td style="WORD-WRAP: break-word" bgcolor="#fdfddf">'
+                    r'<a href="(?P<download>.*?)">', re.S)   # (提取 电影名字 和 下载地址)
 
 # 提取主页面内容 (提取 2024必看热片)
   result1 = obj1.finditer(resp.text)
   for i in result1:
     ul = i.group("ul")
+    # print(ul)
 
     # 提取子页面链接 (提取 单个电影的链接)
     result2 = obj2.finditer(ul)
     for ii in result2:
       # 拼接子页面的url地址: 域名 + 子页面地址
-      url_href = url + ii.group("href").strip("/")
-      url_href_list.append(url_href)   # 把子页面链接保存起来
+      child_href = url + ii.group("href").strip("/")
+      child_href_list.append(child_href)   # 把子页面链接保存起来
 
   # 提取子页面内容 (提取 电影名字 和 下载地址)
-  for href in url_href_list:
+  for href in child_href_list:
     new_resp = requests.get(href, verify=False, headers=headers)
     new_resp.encoding = "gb2312"
 
