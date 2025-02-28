@@ -34,7 +34,7 @@ for a in alist:
   # 下载图片
   img_resp = requests.get(src)    # 先发送请求, 再切割链接作为名字, 这里容易搞混
   img_name = src.split("/")[-1]   # 通过 "/" 来切割, 并且取到最后一个内容
-  with open("img/"+img_name, "wb") as file:   # 先用切割好的名字创建文件
+  with open("img/" + img_name, "wb") as file:   # 先用切割好的名字创建文件
     # img_resp.content   # 这里拿到的是字节       
     file.write(img_resp.content)              # 再用从请求中获得的二进制写入到文件中, 这里也容易搞混
 
