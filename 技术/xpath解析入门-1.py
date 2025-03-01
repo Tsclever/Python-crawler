@@ -1,4 +1,4 @@
-# 项目11 xpath解析入门-1
+# xpath解析入门-1
 
 from lxml import etree
 
