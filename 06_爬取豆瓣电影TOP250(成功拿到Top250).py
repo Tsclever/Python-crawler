@@ -38,4 +38,3 @@ with open("data.csv", mode="w", encoding="utf-8") as file:
       csv_writer.writerow(dic.values())
 
 print("over!")
-
